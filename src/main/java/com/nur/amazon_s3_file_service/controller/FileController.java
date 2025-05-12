@@ -23,7 +23,7 @@ public class FileController {
         return ResponseEntity.ok("File uploaded successfully with key: " + key);
     }
 
-    @GetMapping("/download/{key}")
+    @GetMapping(value = "/download/{key}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> downloadFile(@PathVariable String key) {
         byte[] fileData = s3Service.downloadFile(key);
         return ResponseEntity.ok()
