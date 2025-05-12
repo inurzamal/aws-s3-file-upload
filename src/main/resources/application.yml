@@ -1,0 +1,6 @@
+aws:
+  s3:
+    bucket-name: test-bucket-nur
+    region: ap-south-1
+    access-key:
+    secret-key:
