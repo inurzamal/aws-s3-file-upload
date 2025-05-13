@@ -1,6 +1,5 @@
 package com.nur.amazon_s3_file_service.services;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,9 @@ public class S3Service {
     @Autowired
     private S3Client s3Client;
 
+    @Autowired
+    private SqsService sqsService;
+
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
@@ -44,6 +46,10 @@ public class S3Service {
 
         try {
             s3Client.putObject(putRequest, RequestBody.fromBytes(file.getBytes()));
+            LOGGER.info("File uploaded successfully to S3 with key: {}", key);
+            // Send a message to SQS after successful upload
+            String message = "File uploaded successfully with key: " + key;
+            sqsService.sendMessage(message);
             return key;
         } catch (S3Exception e) {
             throw new RuntimeException("Error uploading file to S3: " + e.awsErrorDetails().errorMessage(), e);

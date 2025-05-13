@@ -2,5 +2,7 @@ aws:
   s3:
     bucket-name: test-bucket-nur
     region: ap-south-1
-    access-key:
-    secret-key:
+    access-key: store access-key in local C:\Users\username\.aws
+    secret-key: store secret-key in local C:\Users\username\.aws
+  sqs:
+    queue-url: https://sqs.ap-south-1.amazonaws.com/115197150226/My-test-queue
