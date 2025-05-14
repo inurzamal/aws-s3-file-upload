@@ -10,9 +10,10 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Configuration
-public class AwsS3Config {
+public class AwsClientConfig {
 
     @Value("${aws.s3.region}")
     private String region;
@@ -39,5 +40,21 @@ public class AwsS3Config {
 
         return builder.build();
     }
+
+    @Bean
+    public SqsClient sqsClient() {
+        return SqsClient.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(accessKey, secretKey))).build();
+    }
+
+//    @Bean
+//    public SqsClient sqsClient() {
+//        return SqsClient.builder()
+//                .region(Region.of(region))
+//                .credentialsProvider(DefaultCredentialsProvider.create())
+//                .build();
+//    }
 
 }
