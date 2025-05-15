@@ -27,6 +27,9 @@ public class S3Service {
     @Autowired
     private SqsService sqsService;
 
+    @Autowired
+    private SnsService snsService;
+
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
@@ -50,6 +53,11 @@ public class S3Service {
             // Send a message to SQS after successful upload
             String message = "File uploaded successfully with key: " + key;
             sqsService.sendMessage(message);
+
+            // Optionally, publish a notification to SNS
+            snsService.publishNotification(message);
+            LOGGER.info("Notification message sent: {}", message);
+
             return key;
         } catch (S3Exception e) {
             throw new RuntimeException("Error uploading file to S3: " + e.awsErrorDetails().errorMessage(), e);

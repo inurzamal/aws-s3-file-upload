@@ -4,6 +4,8 @@ aws:
     region: ap-south-1
   sqs:
     queue-name: My-test-queue
+  sns:
+    topic-arn: arn:aws:sns:ap-south-1:115197150226:My-notification-topic
 
 #    access-key:
 #    secret-key:
